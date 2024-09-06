@@ -9,7 +9,7 @@ class ModelTrainingPipeline:
         config = ConfigurationManager()
         model_trainer_config = config.get_model_config()
         model_trainer_config = ModelTrainer(config=model_trainer_config)
-        model_path = os.path.join("artifacts", "model_trainer", "pegasus-samsum-model", "model-001.safetensors") 
+        model_path = os.path.join("artifacts", "model_trainer", "pegasus-samsum-model", "model.safetensors") 
         if os.path.exists(model_path):
             print(f"Model already exists at {model_path}. Skipping training...")
         else:
