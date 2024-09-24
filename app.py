@@ -7,8 +7,12 @@ from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 from fastapi.responses import Response
 from ScribeSense.pipeline.prediction import PredictionPipeline
+from pydantic import BaseModel
 
-text:str = "What is Text Summarization?"
+class TextRequest(BaseModel):
+    text: str = "What is Text Summarization?"
+
+
 app = FastAPI()
 
 @app.get("/", tags = ["authentication"])
@@ -25,11 +29,11 @@ async def training():
         return Response(f"Error Occured! {e}")
     
 @app.post("/predict")
-async def predict_route(text):
+async def predict_route(request: TextRequest):
     try:
         obj = PredictionPipeline()
-        text = obj.predict(text)
-        return text
+        text = obj.predict(request.text)
+        return {"summary": text} 
     except Exception as e:
         raise e
     
