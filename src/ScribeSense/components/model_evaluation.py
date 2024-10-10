@@ -1,5 +1,6 @@
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
-from datasets import load_dataset, load_from_disk, load_metric
+from datasets import load_dataset, load_from_disk
+from evaluate import load
 import torch
 import pandas as pd
 from tqdm import tqdm
@@ -41,7 +42,7 @@ class ModelEvaluation:
         model  = AutoModelForSeq2SeqLM.from_pretrained(self.config.model_path).to(device)
         dataset_pt = load_from_disk(self.config.data_path)
         rouge_names = ["rouge1", "rouge2", "rougeL", "rougeLsum"]
-        rouge_metric = load_metric('rouge')
+        rouge_metric = load('rouge')
         score = self.calculate_metric_on_test_ds(
             dataset_pt['test'][0:10], rouge_metric, model, tokenizer, batch_size = 2, column_text = 'dialogue', column_summary= 'summary'
         )
